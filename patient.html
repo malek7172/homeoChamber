@@ -1,0 +1,29 @@
+<h2>New Patient</h2>
+
+<input id="name" placeholder="Name">
+<select id="sex">
+  <option>Male</option>
+  <option>Female</option>
+</select>
+<input id="age" placeholder="Age">
+<input id="mobile" placeholder="Mobile">
+<input id="address" placeholder="Address">
+
+<button onclick="savePatient()">Save</button>
+
+<script src="js/app.js"></script>
+<script>
+function savePatient(){
+  post({
+    action:"addPatient",
+    name:name.value,
+    sex:sex.value,
+    age:age.value,
+    mobile:mobile.value,
+    address:address.value
+  }).then(r=>{
+    alert("Saved: "+r.patient_id);
+    location.href="prescription.html";
+  });
+}
+</script>
