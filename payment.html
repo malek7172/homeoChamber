@@ -3,7 +3,7 @@
 <body>
 <h2>Payment</h2>
 
-
+<select id="patient" onchange="fetchDue(this.value)"></select>
 
 <input id="prevDue" readonly><br>
 <input id="paid" oninput="calcPay()"><br>
