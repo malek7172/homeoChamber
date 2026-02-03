@@ -1,1 +1,21 @@
+<input id="user">
+<input id="pass" type="password">
+<button onclick="login()">Login</button>
+function login() {
+  fetch(API_URL,{
+    method:"POST",
+    body:JSON.stringify({
+      action:"login",
+      username:user.value,
+      password:pass.value
+    })
+  })
+  .then(r=>r.json())
+  .then(res=>{
+    if(res.status==="ok"){
+      localStorage.setItem("role",res.role);
+      location.href="dashboard.html";
+    } else alert("Invalid Login");
+  });
+}
 
