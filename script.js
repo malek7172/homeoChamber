@@ -23,3 +23,7 @@ function fetchDue(patientId) {
     calcPrescription();
   });
 }
+const lang = {
+  en: { fee: "Fee", paid: "Paid", due: "Remaining Due" },
+  bn: { fee: "ফি", paid: "পরিশোধ", due: "বাকি টাকা" }
+};
