@@ -1,0 +1,26 @@
+<input type="date" id="from">
+<input type="date" id="to">
+<button onclick="loadReport()">Load</button>
+
+<table id="tbl"></table>
+
+<script src="js/app.js"></script>
+<script>
+function loadReport(){
+  post({
+    action:"getReport",
+    from:from.value,
+    to:to.value
+  }).then(rows=>{
+    tbl.innerHTML="";
+    rows.forEach(r=>{
+      tbl.innerHTML+=`<tr>
+        <td>${r[1]}</td>
+        <td>${r[6]}</td>
+        <td>${r[9]}</td>
+        <td>${r[10]}</td>
+      </tr>`;
+    });
+  });
+}
+</script>
