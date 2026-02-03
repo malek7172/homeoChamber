@@ -1,4 +1,4 @@
-const API_URL = "PASTE_WEB_APP_URL";
+const API_URL = "https://script.google.com/macros/s/AKfycbx9meHigqVAQGuxhg33phSu1pQcPCIp0t5RIiIy96JT-CS_uKQGskMgReQE6aL_niDV/exec";
 
 function calcPrescription() {
   const fee = Number(feeInput.value || 0);
