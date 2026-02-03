@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h2>Payment</h2>
+
+<select id="patient" onchange="fetchDue(this.value)">
+<option>P001</option>
+</select><br>
+
+<input id="prevDue" readonly><br>
+<input id="paid" oninput="calcPay()"><br>
+<input id="remaining" readonly><br>
+<input id="remarks" placeholder="Remarks"><br>
+
+<button onclick="savePayment()">Receive</button>
+
+<script src="js/app.js"></script>
+</body>
+</html>
