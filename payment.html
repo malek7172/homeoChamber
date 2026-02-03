@@ -2,8 +2,10 @@
 <html>
 <body>
 <h2>Payment</h2>
+<input list="patients" id="patient" onchange="fetchDue(this.value)">
+<datalist id="patients"></datalist><br>
 
-<select id="patient" onchange="fetchDue(this.value)"></select><br>
+
 
 <input id="prevDue" readonly><br>
 <input id="paid" oninput="calcPay()"><br>
