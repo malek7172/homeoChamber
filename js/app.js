@@ -69,6 +69,19 @@ function savePayment() {
     remarks: remarks.value
   }).then(() => alert("Payment Saved"));
 }
+function loadPatients() {
+  post({ action: "getPatients" })
+    .then(list => {
+      patient.innerHTML = `<option value="">Select Patient</option>`;
+      list.forEach(p => {
+        patient.innerHTML +=
+          `<option value="${p.id}">
+            ${p.name} (${p.mobile})
+          </option>`;
+      });
+    });
+}
+
 
 function logout() {
   localStorage.clear();
