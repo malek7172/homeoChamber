@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h2>Prescription</h2>
+
+<select id="patient" onchange="fetchDue(this.value)">
+<option>P001</option>
+</select><br>
+
+<input id="date" type="date"><br>
+<textarea id="symptoms" placeholder="Symptoms"></textarea><br>
+<input id="remedy" placeholder="Remedy"><br>
+<input id="dose" placeholder="Dose"><br>
+
+<input id="fee" placeholder="Fee" oninput="calc()"><br>
+<input id="prevDue" placeholder="Previous Due" readonly><br>
+<input id="total" placeholder="Total" readonly><br>
+<input id="paid" placeholder="Paid" oninput="calc()"><br>
+<input id="remaining" placeholder="Remaining Due" readonly><br>
+<input id="nextVisit" type="date"><br>
+
+<button onclick="savePrescription()">Save</button>
+<button onclick="window.print()">Print</button>
+
+<script src="js/app.js"></script>
+</body>
+</html>
