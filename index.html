@@ -1,21 +1,15 @@
-<input id="user">
-<input id="pass" type="password">
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<h2 data-key="login">Login</h2>
+<input id="user" placeholder="Username"><br>
+<input id="pass" type="password" placeholder="Password"><br>
 <button onclick="login()">Login</button>
-function login() {
-  fetch(API_URL,{
-    method:"POST",
-    body:JSON.stringify({
-      action:"login",
-      username:user.value,
-      password:pass.value
-    })
-  })
-  .then(r=>r.json())
-  .then(res=>{
-    if(res.status==="ok"){
-      localStorage.setItem("role",res.role);
-      location.href="dashboard.html";
-    } else alert("Invalid Login");
-  });
-}
 
+<script src="js/app.js"></script>
+<script src="js/lang.js"></script>
+</body>
+</html>
