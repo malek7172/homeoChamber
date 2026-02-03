@@ -1,0 +1,7 @@
+<button onclick="go('prescription.html')">Prescription</button>
+<button onclick="go('payment.html')">Payment</button>
+<button onclick="logout()">Logout</button>
+const role = localStorage.getItem("role");
+if(role==="staff"){
+  document.querySelector("button[onclick*='prescription']").style.display="none";
+}
