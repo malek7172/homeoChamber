@@ -16,7 +16,7 @@ function json(o) {
 }
 
 
-function savePatient() {
+function addPatient() {
   post({
     action: "addPatient",
     name: pname.value,
