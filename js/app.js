@@ -78,3 +78,32 @@ function savePrescription() {
     getDue(); // refresh running due
   });
 }
+
+
+function loadReport() {
+  post({
+    action: "getReport",
+    from: from.value,
+    to: to.value
+  }).then(rows => {
+    let html = `
+      <tr>
+        <th>Date</th>
+        <th>Patient ID</th>
+        <th>Fee</th>
+        <th>Paid</th>
+        <th>Remaining Due</th>
+      </tr>`;
+    rows.forEach(r => {
+      html += `
+        <tr>
+          <td>${new Date(r[0]).toLocaleDateString()}</td>
+          <td>${r[1]}</td>
+          <td>${r[2]}</td>
+          <td>${r[3]}</td>
+          <td>${r[4]}</td>
+        </tr>`;
+    });
+    tbl.innerHTML = html;
+  });
+}
