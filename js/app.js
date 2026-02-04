@@ -42,7 +42,7 @@ function calcPay() {
 
 /* SAVE */
 function savePrescription() {
-  post({
+  safePost({
     action: "savePrescription",
     patient_id: patient.value,
     date: date.value,
