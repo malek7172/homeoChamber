@@ -22,40 +22,35 @@ function login() {
 }
 
 /* FETCH DUE */
-function fetchDue(pid) {
-  post({ action: "getDue", patient_id: pid })
-    .then(d => {
-      prevDue.value = d;
-      calc();
-    });
+function getDue() {
+  let pid = document.getElementById("patient").value;
+  google.script.run.withSuccessHandler(d => {
+    document.getElementById("due").innerText = d;
+    calc();
+  }).getPatientDue(pid);
 }
 
 /* CALCULATIONS */
 function calc() {
-  total.value = (+fee.value || 0) + (+prevDue.value || 0);
-  remaining.value = total.value - (+paid.value || 0);
+  let fee = Number(document.getElementById("fee").value || 0);
+  let paid = Number(document.getElementById("paid").value || 0);
+  let due = Number(document.getElementById("due").innerText);
+  document.getElementById("remain").innerText = fee + due - paid;
 }
-
 function calcPay() {
   remaining.value = (+prevDue.value || 0) - (+paid.value || 0);
 }
 
 /* SAVE */
 function savePrescription() {
-  safePost({
-    action: "savePrescription",
-    patient_id: patient.value,
-    date: date.value,
-    symptoms: symptoms.value,
-    remedy: remedy.value,
-    dose: dose.value,
+  google.script.run.savePrescription({
+    patientId: document.getElementById("patient").value,
     fee: fee.value,
-    previous_due: prevDue.value,
-    total: total.value,
+    previousDue: due.innerText,
+    total: Number(fee.value) + Number(due.innerText),
     paid: paid.value,
-    remaining_due: remaining.value,
-    next_visit: nextVisit.value
-  }).then(() => alert("Saved"));
+    remaining: remain.innerText
+  });
 }
 
 function savePayment() {
@@ -70,16 +65,13 @@ function savePayment() {
   }).then(() => alert("Payment Saved"));
 }
 function loadPatients() {
-  post({ action: "getPatients" })
-    .then(list => {
-      patient.innerHTML = `<option value="">Select Patient</option>`;
-      list.forEach(p => {
-        patient.innerHTML +=
-          `<option value="${p.id}">
-            ${p.name} (${p.mobile})
-          </option>`;
-      });
+  google.script.run.withSuccessHandler(data => {
+    let sel = document.getElementById("patient");
+    sel.innerHTML = "";
+    data.forEach(p => {
+      sel.innerHTML += `<option value="${p[0]}">${p[1]}</option>`;
     });
+  }).getPatients();
 }
 
 
@@ -107,4 +99,4 @@ window.addEventListener("online", () => {
   queue.forEach(d => post(d));
   localStorage.removeItem("queue");
 });
-
+window.onload = loadPatients;
