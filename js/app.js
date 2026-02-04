@@ -14,3 +14,19 @@ function json(o) {
   return ContentService.createTextOutput(JSON.stringify(o))
     .setMimeType(ContentService.MimeType.JSON);
 }
+
+
+function savePatient() {
+  post({
+    action: "addPatient",
+    name: pname.value,
+    sex: sex.value,
+    age: age.value,
+    mobile: mobile.value,
+    address: address.value
+  }).then(() => {
+    alert("Patient saved");
+    loadPatients();
+  });
+}
+
