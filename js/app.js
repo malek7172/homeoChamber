@@ -42,3 +42,39 @@ function savePayment() {
     loadPaymentDue(); // refresh
   });
 }
+function getDue() {
+  let pid = patient.value;
+  if (!pid) return;
+
+  post({
+    action: "getPatientDue",
+    patientId: pid
+  }).then(d => {
+    due.innerText = d;
+    calc();
+  });
+}
+
+function calc() {
+  let fee = Number(feeInput.value || 0);
+  let paid = Number(paidInput.value || 0);
+  let prev = Number(due.innerText || 0);
+  remain.innerText = fee + prev - paid;
+}
+
+function savePrescription() {
+  post({
+    action: "savePrescription",
+    patientId: patient.value,
+    symptoms: symptoms.value,
+    fee: feeInput.value,
+    previousDue: due.innerText,
+    total: Number(feeInput.value) + Number(due.innerText),
+    paid: paidInput.value,
+    remaining: remain.innerText,
+    nextVisit: nextVisit.value
+  }).then(() => {
+    alert("Prescription saved");
+    getDue(); // refresh running due
+  });
+}
