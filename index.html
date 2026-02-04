@@ -2,28 +2,42 @@
 <html>
 <head>
   <title>Doctor Chamber</title>
-  <script src="app.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script defer src="app.js"></script>
 </head>
+
 <body>
 
-<h2>Patient Entry</h2>
+<h2>👤 Patient Entry</h2>
+
 <input id="pname" placeholder="Name">
+<input id="sex" placeholder="Sex">
 <input id="age" placeholder="Age">
 <input id="mobile" placeholder="Mobile">
-<button onclick="addPatient()">Save Patient</button>
+<input id="address" placeholder="Address">
+
+<button onclick="savePatient()">Save Patient</button>
 
 <hr>
 
-<h2>Prescription</h2>
-<select id="patient"></select>
-<p>Previous Due: <span id="due">0</span></p>
+<h2>📝 Prescription</h2>
 
-<input id="fee" placeholder="Fee" oninput="calc()">
-<input id="paid" placeholder="Paid" oninput="calc()">
+<label>Patient</label><br>
+<select id="patient" onchange="getDue()"></select>
 
-<p>Remaining Due: <span id="remain">0</span></p>
+<p>Previous Due: <b><span id="due">0</span></b></p>
 
-<button onclick="savePrescription()">Save</button>
+<textarea id="symptoms" placeholder="Symptoms"></textarea>
+
+<input id="feeInput" placeholder="Fee" oninput="calc()">
+<input id="paidInput" placeholder="Paid" oninput="calc()">
+
+<p>Remaining Due: <b><span id="remain">0</span></b></p>
+
+<label>Next Visit</label>
+<input type="date" id="nextVisit">
+
+<button onclick="savePrescription()">Save Prescription</button>
 
 </body>
 </html>
