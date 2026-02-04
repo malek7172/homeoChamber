@@ -30,3 +30,15 @@ function savePatient() {
   });
 }
 
+function savePayment() {
+  safePost({
+    action: "savePayment",
+    patientId: patient.value,
+    previousDue: prevDue.value,
+    paid: paidPay.value,
+    remaining: remainingPay.value
+  }).then(() => {
+    alert("Payment received");
+    loadPaymentDue(); // refresh
+  });
+}
