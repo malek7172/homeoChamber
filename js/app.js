@@ -88,3 +88,23 @@ function logout() {
   location.href = "index.html";
 }
 
+
+/* ---------- SAFE POST (ONLINE + OFFLINE) ---------- */
+function safePost(data) {
+  if (navigator.onLine) {
+    return post(data);
+  } else {
+    let queue = JSON.parse(localStorage.getItem("queue") || "[]");
+    queue.push(data);
+    localStorage.setItem("queue", JSON.stringify(queue));
+    alert("Saved offline. Will sync when internet is available.");
+  }
+}
+
+/* ---------- AUTO SYNC WHEN ONLINE ---------- */
+window.addEventListener("online", () => {
+  let queue = JSON.parse(localStorage.getItem("queue") || "[]");
+  queue.forEach(d => post(d));
+  localStorage.removeItem("queue");
+});
+
