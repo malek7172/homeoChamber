@@ -71,26 +71,21 @@ function addPatient() {
 function loadPatients() {
   post({ action: "getPatients" }).then(data => {
 
-    // For select dropdown
     const sel = document.getElementById("patient");
-    if (sel) {
-      sel.innerHTML = `<option value="">Select Patient</option>`;
-      data.forEach(p => {
-        sel.innerHTML += `<option value="${p[0]}">${p[1]} (${p[4]})</option>`;
-      });
-    }
+    if (!sel) return;
 
-    // For datalist (payment page)
-    const list = document.getElementById("patients");
-    if (list) {
-      list.innerHTML = "";
-      data.forEach(p => {
-        list.innerHTML += `<option value="${p[0]} - ${p[1]}"></option>`;
-      });
-    }
+    sel.innerHTML = `<option value="">Select Patient</option>`;
+
+    data.forEach(p => {
+      sel.innerHTML += `
+        <option value="${p[0]}">
+          ${p[1]} (${p[4]})
+        </option>`;
+    });
 
   });
 }
+
 
 
 // ================= GET PATIENT DUE =================
