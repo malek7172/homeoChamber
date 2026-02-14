@@ -99,51 +99,52 @@ function loadRemedies() {
 
 
 // ================= GET PATIENT DUE =================
+/* ---------- Get Previous Due ---------- */
 function getDue() {
-  let pid = document.getElementById("patient").value;
+  const pid = document.getElementById("patient").value;
   if (!pid) return;
 
-  post({
-    action: "getPatientDue",
-    patientId: pid
-  }).then(d => {
-    document.getElementById("due").innerText = d;
-    calc();
-  });
+  post({ action: "getPreviousDue", patientId: pid })
+    .then(d => {
+      document.getElementById("due").innerText = d || 0;
+      calc();
+    });
 }
 
-
-// ================= CALCULATE REMAINING =================
+/* ---------- Calculate Remaining ---------- */
 function calc() {
-  let fee = Number(feeInput.value || 0);
-  let paid = Number(paidInput.value || 0);
-  let prev = Number(due.innerText || 0);
-
-  remain.innerText = fee + prev - paid;
+  const fee = Number(document.getElementById("feeInput").value || 0);
+  const paid = Number(document.getElementById("paidInput").value || 0);
+  const prev = Number(document.getElementById("due").innerText || 0);
+  document.getElementById("remain").innerText = fee + prev - paid;
 }
 
 
 // ================= SAVE PRESCRIPTION =================
 function savePrescription() {
+  const remedySelect = document.getElementById("remedy");
+  const selectedPower = remedySelect.selectedOptions[0]?.dataset?.power || "";
+
+  const patientId = document.getElementById("patient").value;
+
   post({
     action: "savePrescription",
-    patientId: document.getElementById("patient").value,
+    patientId: patientId,
     symptoms: document.getElementById("symptoms").value,
+    remedy: remedySelect.value,
+    power: selectedPower,
+    dose: document.getElementById("dose").value,
     fee: Number(document.getElementById("feeInput").value) || 0,
     previousDue: Number(document.getElementById("due").innerText) || 0,
     total: (Number(document.getElementById("feeInput").value) || 0) + (Number(document.getElementById("due").innerText) || 0),
     paid: Number(document.getElementById("paidInput").value) || 0,
     remaining: (Number(document.getElementById("feeInput").value) || 0) + (Number(document.getElementById("due").innerText) || 0) - (Number(document.getElementById("paidInput").value) || 0),
-    nextVisit: document.getElementById("nextVisit").value,
-    remedyId: document.getElementById("remedy").value,
-    dose: document.getElementById("dose").value
+    nextVisit: document.getElementById("nextVisit").value
   }).then(() => {
-    alert("Prescription saved");
-    getDue(); // refresh due
+    alert("Prescription saved!");
+    getDue();
   });
 }
-
-
 
 // ================= SAVE PAYMENT =================
 function savePayment() {
