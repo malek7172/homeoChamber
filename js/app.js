@@ -134,8 +134,9 @@ function savePrescription() {
     remedy: remedySelect.value,
     power: selectedPower,
     dose: document.getElementById("dose").value,
-    fee: Number(document.getElementById("feeInput").value) || 0,
+   
     previousDue: Number(document.getElementById("due").innerText) || 0,
+     fee: Number(document.getElementById("feeInput").value) || 0,
     total: (Number(document.getElementById("feeInput").value) || 0) + (Number(document.getElementById("due").innerText) || 0),
     paid: Number(document.getElementById("paidInput").value) || 0,
     remaining: (Number(document.getElementById("feeInput").value) || 0) + (Number(document.getElementById("due").innerText) || 0) - (Number(document.getElementById("paidInput").value) || 0),
