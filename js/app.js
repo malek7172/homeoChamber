@@ -85,6 +85,16 @@ function loadPatients() {
 
   });
 }
+//======== load remedies ===========
+function loadRemedies() {
+  post({ action: "getRemedies" }).then(data => {
+    const sel = document.getElementById("remedy");
+    sel.innerHTML = `<option value="">Select Remedy</option>`;
+    data.forEach(r => {
+      sel.innerHTML += `<option value="${r[0]}">${r[1]}</option>`;
+    });
+  });
+}
 
 
 
