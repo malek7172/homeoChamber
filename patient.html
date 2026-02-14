@@ -1,31 +1,53 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>New Patient</title>
+  <title>Prescription</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
- 
 </head>
 
 <body>
 
-<h2>👤 New Patient</h2>
+<h2>📝 Prescription</h2>
 
-<input id="pname" placeholder="Name">
-<br><br><select id="sex">
-  <option value="">Sex</option>
-  <option>Male</option>
-  <option>Female</option>
-</select><br>
-<br><br><input id="age" placeholder="Age">
-<br><br><input id="mobile" placeholder="Mobile">
-<br><br><input id="address" placeholder="Address">
-  
-<br><br><button onclick="addPatient()">Save Patient</button>
-  <button onclick="logout()">🚪 Logout</button>
+<!-- Patient Dropdown -->
+<select id="patient" onchange="getDue()">
+  <option value="">Select Patient</option>
+</select>
 
-<script src="js/app.js?v=2"></script>
+<br><br>
 
+Previous Due: <span id="due">0</span>
 
+<br><br>
+
+<input id="symptoms" placeholder="Symptoms">
+<br><br>
+
+<input id="feeInput" placeholder="Fee" oninput="calc()">
+<br><br>
+
+<input id="paidInput" placeholder="Paid" oninput="calc()">
+<br><br>
+
+Remaining: <span id="remain">0</span>
+
+<br><br>
+
+<input id="nextVisit" type="date">
+
+<br><br>
+
+<button onclick="savePrescription()">Save Prescription</button>
+<button onclick="logout()">🚪 Logout</button>
+
+<script src="js/app.js?v=3"></script>
+
+<script>
+  // 🔥 THIS IS IMPORTANT
+  window.onload = function () {
+    loadPatients();
+  };
+</script>
 
 </body>
 </html>
