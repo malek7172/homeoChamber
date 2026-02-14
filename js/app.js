@@ -13,18 +13,18 @@ function post(data) {
 
 // ================= LOGIN =================
 function login() {
-  const user = document.getElementById("username").value.trim();
-  const pass = document.getElementById("password").value.trim();
+  const user = document.getElementById("user").value.trim();
+  const pass = document.getElementById("pass").value.trim();
 
-  if (!username || !password) {
+  if (!user || !pass) {
     alert("Enter username and password");
     return;
   }
 
   post({
     action: "login",
-    username: user,
-    password: pass
+    user: user,
+    pass: pass
   }).then(r => {
 
     console.log("Login response:", r);
