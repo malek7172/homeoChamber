@@ -1,21 +1,57 @@
-function doPost(e) {
-  const data = JSON.parse(e.postData.contents);
-  switch (data.action) {
-    case "login": return json(login(data.user, data.pass));
-    case "getPatients": return json(getPatients());
-    case "getPatientDue": return json(getPatientDue(data.patientId));
-    case "savePrescription": return json(savePrescription(data));
-    case "savePayment": return json(savePayment(data));
-    default: return json({ error: "Invalid action" });
+// 🔴 IMPORTANT: Paste your latest deployed Web App URL here
+const API_URL = "PASTE_YOUR_WEB_APP_URL_HERE";
+
+
+// ================= GENERIC POST =================
+function post(data) {
+  return fetch(API_URL, {
+    method: "POST",
+    body: JSON.stringify(data)
+  }).then(res => res.json());
+}
+
+
+// ================= LOGIN =================
+function login() {
+  const username = document.getElementById("username").value.trim();
+  const password = document.getElementById("password").value.trim();
+
+  if (!username || !password) {
+    alert("Enter username and password");
+    return;
   }
+
+  post({
+    action: "login",
+    username: username,
+    password: password
+  }).then(r => {
+
+    console.log("Login response:", r);
+
+    if (r.status === "ok") {
+      localStorage.setItem("role", r.role);
+      localStorage.setItem("username", username);
+      window.location.href = "dashboard.html";
+    } else {
+      alert("Login failed. Check username/password.");
+    }
+
+  }).catch(err => {
+    console.error(err);
+    alert("Server error. Check deployment.");
+  });
 }
 
-function json(o) {
-  return ContentService.createTextOutput(JSON.stringify(o))
-    .setMimeType(ContentService.MimeType.JSON);
+
+// ================= LOGOUT =================
+function logout() {
+  localStorage.clear();
+  window.location.href = "index.html";
 }
 
 
+// ================= ADD PATIENT =================
 function addPatient() {
   post({
     action: "addPatient",
@@ -30,38 +66,59 @@ function addPatient() {
   });
 }
 
-function savePayment() {
-  safePost({
-    action: "savePayment",
-    patientId: patient.value,
-    previousDue: prevDue.value,
-    paid: paidPay.value,
-    remaining: remainingPay.value
-  }).then(() => {
-    alert("Payment received");
-    loadPaymentDue(); // refresh
+
+// ================= LOAD PATIENTS =================
+function loadPatients() {
+  post({ action: "getPatients" }).then(data => {
+
+    // For select dropdown
+    const sel = document.getElementById("patient");
+    if (sel) {
+      sel.innerHTML = `<option value="">Select Patient</option>`;
+      data.forEach(p => {
+        sel.innerHTML += `<option value="${p[0]}">${p[1]} (${p[4]})</option>`;
+      });
+    }
+
+    // For datalist (payment page)
+    const list = document.getElementById("patients");
+    if (list) {
+      list.innerHTML = "";
+      data.forEach(p => {
+        list.innerHTML += `<option value="${p[0]} - ${p[1]}"></option>`;
+      });
+    }
+
   });
 }
+
+
+// ================= GET PATIENT DUE =================
 function getDue() {
-  let pid = patient.value;
+  let pid = document.getElementById("patient").value;
   if (!pid) return;
 
   post({
     action: "getPatientDue",
     patientId: pid
   }).then(d => {
-    due.innerText = d;
+    document.getElementById("due").innerText = d;
     calc();
   });
 }
 
+
+// ================= CALCULATE REMAINING =================
 function calc() {
   let fee = Number(feeInput.value || 0);
   let paid = Number(paidInput.value || 0);
   let prev = Number(due.innerText || 0);
+
   remain.innerText = fee + prev - paid;
 }
 
+
+// ================= SAVE PRESCRIPTION =================
 function savePrescription() {
   post({
     action: "savePrescription",
@@ -75,17 +132,33 @@ function savePrescription() {
     nextVisit: nextVisit.value
   }).then(() => {
     alert("Prescription saved");
-    getDue(); // refresh running due
+    getDue();
   });
 }
 
 
+// ================= SAVE PAYMENT =================
+function savePayment() {
+  post({
+    action: "savePayment",
+    patientId: patient.value,
+    previousDue: prevDue.value,
+    paid: paidPay.value,
+    remaining: remainingPay.value
+  }).then(() => {
+    alert("Payment received");
+  });
+}
+
+
+// ================= REPORT =================
 function loadReport() {
   post({
     action: "getReport",
     from: from.value,
     to: to.value
   }).then(rows => {
+
     let html = `
       <tr>
         <th>Date</th>
@@ -94,6 +167,7 @@ function loadReport() {
         <th>Paid</th>
         <th>Remaining Due</th>
       </tr>`;
+
     rows.forEach(r => {
       html += `
         <tr>
@@ -104,6 +178,7 @@ function loadReport() {
           <td>${r[4]}</td>
         </tr>`;
     });
+
     tbl.innerHTML = html;
   });
 }
