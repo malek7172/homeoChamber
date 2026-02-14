@@ -3,7 +3,7 @@
 <head>
   <title>Prescription</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script defer src="app.js"></script>
+  <script defer src="js/app.js?v=4"></script>
 </head>
 
 <body>
@@ -11,7 +11,7 @@
 <h2>📝 Prescription</h2>
 
 <label>Patient</label><br>
-<select id="patients" onchange="getDue()"></select><br><br>
+<select id="patient" onchange="getDue()"></select><br><br>
 
 <label>Date</label><br>
 <input id="date" type="date"><br><br>
@@ -20,7 +20,7 @@
 <textarea id="symptoms" placeholder="Symptoms"></textarea><br><br>
 
 <label>Remedy</label><br>
-<input id="remedy" placeholder="Remedy"><br><br>
+<select id="remedy"></select><br><br>
 
 <label>Dose</label><br>
 <input id="dose" placeholder="Dose"><br><br>
@@ -42,8 +42,15 @@
 
 <button onclick="savePrescription()">💾 Save</button>
 <button onclick="window.print()">🖨 Print</button>
-  <button onclick="logout()">🚪 Logout</button>
+<button onclick="logout()">🚪 Logout</button>
 
-<script src="js/app.js?v=3"></script>
+<script>
+  // 🔥 Load data when page opens
+  window.onload = function() {
+    loadPatients();
+    loadRemedies();
+  };
+</script>
+
 </body>
 </html>
