@@ -112,7 +112,7 @@ const API_URL = "https://script.google.com/macros/s/AKfycbx9meHigqVAQGuxhg33phSu
 
 // Generic POST function
 function post(data) {
-  return fetch(API_URL, {
+  return fetch(API_URL, { 
     method: "POST",
     body: JSON.stringify(data)
   }).then(res => res.json());
