@@ -1,5 +1,5 @@
 // 🔴 IMPORTANT: Paste your latest deployed Web App URL here
-const API_URL = "PASTE_YOUR_WEB_APP_URL_HERE";
+const API_URL = "https://script.google.com/macros/s/AKfycbz73pJDpcpbjbytkQk-5djgThxuUoMLbpo24Qnz8leyM-a_Wpdd85DysuqLgAbMu28s/exec";
 
 
 // ================= GENERIC POST =================
