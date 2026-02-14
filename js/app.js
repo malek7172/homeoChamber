@@ -31,7 +31,7 @@ function login() {
 
     if (r.status === "ok") {
       localStorage.setItem("role", r.role);
-      localStorage.setItem("username", username);
+      localStorage.setItem("user", user);
       window.location.href = "dashboard.html";
     } else {
       alert("Login failed. Check username/password.");
