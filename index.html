@@ -1,51 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Doctor Chamber</title>
+  <title>Login</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script defer src="app.js"></script>
+  <script defer src="js/app.js"></script>
 </head>
-
 <body>
 
-<h2>👤 Patient Entry</h2>
+<h2>🔐 Login</h2>
 
-<input id="pname" placeholder="Name">
-<input id="sex" placeholder="Sex">
-<input id="age" placeholder="Age">
-<input id="mobile" placeholder="Mobile">
-<input id="address" placeholder="Address">
+<input id="username" placeholder="Username"><br><br>
+<input id="password" type="password" placeholder="Password"><br><br>
 
-<button onclick="addPatient()">Save Patient</button>
-
-<hr>
-
-<h2>📝 Prescription</h2>
-
-<label>Patient</label><br>
-<select id="patient" onchange="getDue()"></select>
-
-<p>Previous Due: <b><span id="due">0</span></b></p>
-
-<textarea id="symptoms" placeholder="Symptoms"></textarea>
-
-<input id="feeInput" placeholder="Fee" oninput="calc()">
-<input id="paidInput" placeholder="Paid" oninput="calc()">
-
-<p>Remaining Due: <b><span id="remain">0</span></b></p>
-
-<label>Next Visit</label>
-<input type="date" id="nextVisit">
-
-<button onclick="savePrescription()">Save Prescription</button>
-<script defer src="app.js"></script>
-<script>
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("/service-worker.js")
-    .then(reg => console.log("SW registered", reg))
-    .catch(err => console.log("SW registration failed", err));
-}
-</script>
+<button onclick="login()">Login</button>
 
 </body>
 </html>
