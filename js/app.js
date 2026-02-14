@@ -108,7 +108,7 @@ function loadReport() {
   });
 }*/
 // 🔹 Change this to your deployed Apps Script Web App URL
-const API_URL = "PASTE_YOUR_WEB_APP_URL_HERE";
+const API_URL = "https://script.google.com/macros/s/AKfycbx9meHigqVAQGuxhg33phSu1pQcPCIp0t5RIiIy96JT-CS_uKQGskMgReQE6aL_niDV/exec";
 
 // Generic POST function
 function post(data) {
