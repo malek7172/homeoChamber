@@ -1,4 +1,4 @@
-function doPost(e) {
+/*function doPost(e) {
   const data = JSON.parse(e.postData.contents);
   switch (data.action) {
     case "login": return json(login(data.user, data.pass));
@@ -106,4 +106,53 @@ function loadReport() {
     });
     tbl.innerHTML = html;
   });
+}*/
+// 🔹 Change this to your deployed Apps Script Web App URL
+const API_URL = "PASTE_YOUR_WEB_APP_URL_HERE";
+
+// Generic POST function
+function post(data) {
+  return fetch(API_URL, {
+    method: "POST",
+    body: JSON.stringify(data)
+  }).then(res => res.json());
 }
+
+// 🔐 LOGIN FUNCTION
+function login() {
+  const user = document.getElementById("username").value.trim();
+  const pass = document.getElementById("password").value.trim();
+
+  if (!user || !pass) {
+    alert("Enter username and password");
+    return;
+  }
+
+  post({
+    action: "login",
+    username: user,
+    password: pass
+  }).then(r => {
+
+    console.log(r); // for debugging
+
+    if (r.status === "ok") {
+      localStorage.setItem("role", r.role);
+      localStorage.setItem("username", user);
+      window.location.href = "dashboard.html";
+    } else {
+      alert("Login failed. Check username/password.");
+    }
+
+  }).catch(err => {
+    alert("Server error. Check deployment.");
+    console.error(err);
+  });
+}
+
+// 🚪 Logout
+function logout() {
+  localStorage.clear();
+  window.location.href = "index.html";
+}
+
