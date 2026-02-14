@@ -127,19 +127,22 @@ function calc() {
 function savePrescription() {
   post({
     action: "savePrescription",
-    patientId: patient.value,
-    symptoms: symptoms.value,
-    fee: feeInput.value,
-    previousDue: due.innerText,
-    total: Number(feeInput.value) + Number(due.innerText),
-    paid: paidInput.value,
-    remaining: remain.innerText,
-    nextVisit: nextVisit.value
+    patientId: document.getElementById("patient").value,
+    symptoms: document.getElementById("symptoms").value,
+    fee: Number(document.getElementById("feeInput").value) || 0,
+    previousDue: Number(document.getElementById("due").innerText) || 0,
+    total: (Number(document.getElementById("feeInput").value) || 0) + (Number(document.getElementById("due").innerText) || 0),
+    paid: Number(document.getElementById("paidInput").value) || 0,
+    remaining: (Number(document.getElementById("feeInput").value) || 0) + (Number(document.getElementById("due").innerText) || 0) - (Number(document.getElementById("paidInput").value) || 0),
+    nextVisit: document.getElementById("nextVisit").value,
+    remedyId: document.getElementById("remedy").value,
+    dose: document.getElementById("dose").value
   }).then(() => {
     alert("Prescription saved");
-    getDue();
+    getDue(); // refresh due
   });
 }
+
 
 
 // ================= SAVE PAYMENT =================
