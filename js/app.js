@@ -53,16 +53,31 @@ function logout() {
 
 // ================= ADD PATIENT =================
 function addPatient() {
+
+  const name = document.getElementById("name").value;
+  const sex = document.getElementById("sex").value;
+  const age = document.getElementById("age").value;
+  const mobile = document.getElementById("mobile").value;
+  const address = document.getElementById("address").value;
+
+  if (!name || !mobile) {
+    alert("Name and Mobile are required");
+    return;
+  }
+
   post({
-    action: "addPatient",
-    name: pname.value,
-    sex: sex.value,
-    age: age.value,
-    mobile: mobile.value,
-    address: address.value
-  }).then(() => {
-    alert("Patient saved");
-    loadPatients();
+    action: "savePatient",
+    name: name,
+    sex: sex,
+    age: age,
+    mobile: mobile,
+    address: address
+  }).then(res => {
+    alert("Patient Saved Successfully!");
+    location.reload();
+  }).catch(err => {
+    console.error(err);
+    alert("Error saving patient");
   });
 }
 
