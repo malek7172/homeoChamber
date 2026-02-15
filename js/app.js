@@ -177,57 +177,31 @@ function savePayment() {
 }
 
 
-// ================= REPORT =================
-function loadReport() {
-  const from = document.getElementById("from").value;
-  const to = document.getElementById("to").value;
 
-  post({
-    action: "getReport",
-    from: from,
-    to: to
-  }).then(data => {
-
-    const table = document.getElementById("tbl");
-
-    // Clear old rows except header
-    table.innerHTML = `
-      <tr>
-        <th>Date</th>
-        <th>Patient ID</th>
-        <th>Fee</th>
-        <th>Paid</th>
-        <th>Remaining Due</th>
-      </tr>
-    `;
-
-    data.forEach(r => {
-      table.innerHTML += `
-        <tr>
-          <td>${r.date}</td>
-          <td>${r.patientId}</td>
-          <td>${r.fee}</td>
-          <td>${r.paid}</td>
-          <td>${r.remaining}</td>
-        </tr>
-      `;
-    });
-
-  }).catch(err => {
-    console.error(err);
-    alert("Error loading report");
-  });
-}
 //========patient filter in report ==============
 function loadPatientsFilter() {
-  post({ action: "getPatients" }).then(data => {
-    const sel = document.getElementById("patientFilter");
 
-    data.forEach(p => {
-      sel.innerHTML += `<option value="${p[0]}">${p[1]}</option>`;
+  post({ action: "getPatients" })
+    .then(data => {
+
+      console.log("Patients:", data);  // 🔎 DEBUG
+
+      const sel = document.getElementById("patientFilter");
+
+      sel.innerHTML = `<option value="">All Patients</option>`;
+
+      data.forEach(p => {
+        sel.innerHTML += `
+          <option value="${p[0]}">${p[1]}</option>
+        `;
+      });
+
+    })
+    .catch(err => {
+      console.error("Patient Load Error:", err);
     });
-  });
 }
+
 //=====load report auto filter ===============
 function loadReport() {
 
