@@ -15,33 +15,17 @@ function post(data) {
 function login() {
   const user = document.getElementById("user").value.trim();
   const pass = document.getElementById("pass").value.trim();
+  if (!user || !pass) return alert("Enter username and password");
 
-  if (!user || !pass) {
-    alert("Enter username and password");
-    return;
-  }
-
-  post({
-    action: "login",
-    user: user,
-    pass: pass
-  }).then(r => {
-
-    console.log("Login response:", r);
-
-    if (r.status === "ok") {
+  post({ action: "login", user, pass }).then(r => {
+    if (r.success) {           // <-- changed from r.status
       localStorage.setItem("role", r.role);
       localStorage.setItem("user", user);
       window.location.href = "dashboard.html";
-    } else {
-      alert("Login failed. Check username/password.");
-    }
-
-  }).catch(err => {
-    console.error(err);
-    alert("Server error. Check deployment.");
+    } else alert("Login failed");
   });
 }
+
 
 
 // ================= LOGOUT =================
@@ -53,31 +37,20 @@ function logout() {
 
 // ================= ADD PATIENT =================
 function addPatient() {
-
   const name = document.getElementById("name").value;
   const sex = document.getElementById("sex").value;
   const age = document.getElementById("age").value;
   const mobile = document.getElementById("mobile").value;
   const address = document.getElementById("address").value;
 
-  if (!name || !mobile) {
-    alert("Name and Mobile are required");
-    return;
-  }
+  if (!name || !mobile) return alert("Name and Mobile are required");
 
-  post({
-    action: "savePatient",
-    name: name,
-    sex: sex,
-    age: age,
-    mobile: mobile,
-    address: address
-  }).then(res => {
+  safePost({
+    action: "addPatient",  // <-- changed from savePatient
+    name, sex, age, mobile, address
+  }).then(() => {
     alert("Patient Saved Successfully!");
-    location.reload();
-  }).catch(err => {
-    console.error(err);
-    alert("Error saving patient");
+    loadPatients();   // refresh dropdown
   });
 }
 
@@ -106,10 +79,11 @@ function loadRemedies() {
     const sel = document.getElementById("remedy");
     sel.innerHTML = `<option value="">Select Remedy</option>`;
     data.forEach(r => {
-      sel.innerHTML += `<option value="${r[0]}">${r[1]}</option>`;
+      sel.innerHTML += `<option value="${r.name}" data-power="${r.power}">${r.name}</option>`;
     });
   });
 }
+
 
 
 
@@ -137,43 +111,38 @@ function calc() {
 
 // ================= SAVE PRESCRIPTION =================
 function savePrescription() {
-  const remedySelect = document.getElementById("remedy");
-  const selectedPower = remedySelect.selectedOptions[0]?.dataset?.power || "";
-
   const patientId = document.getElementById("patient").value;
+  const remedySelect = document.getElementById("remedy");
 
-  post({
+  safePost({
     action: "savePrescription",
-    patientId: patientId,
+    patientId,
     symptoms: document.getElementById("symptoms").value,
     remedy: remedySelect.value,
-    power: document.getElementById("power").value,
-
+    power: remedySelect.selectedOptions[0]?.dataset.power || "",
     dose: document.getElementById("dose").value,
-   
-    previousDue: Number(document.getElementById("due").innerText) || 0,
-     fee: Number(document.getElementById("feeInput").value) || 0,
-    total: (Number(document.getElementById("feeInput").value) || 0) + (Number(document.getElementById("due").innerText) || 0),
-    paid: Number(document.getElementById("paidInput").value) || 0,
-    remaining: (Number(document.getElementById("feeInput").value) || 0) + (Number(document.getElementById("due").innerText) || 0) - (Number(document.getElementById("paidInput").value) || 0),
+    previousDue: Number(document.getElementById("due").innerText),
+    fee: Number(document.getElementById("feeInput").value),
+    total: Number(document.getElementById("feeInput").value) + Number(document.getElementById("due").innerText),
+    paid: Number(document.getElementById("paidInput").value),
+    remaining: Number(document.getElementById("feeInput").value) + Number(document.getElementById("due").innerText) - Number(document.getElementById("paidInput").value),
     nextVisit: document.getElementById("nextVisit").value
   }).then(() => {
     alert("Prescription saved!");
-    getDue();
+    getDue(); // refresh previous due
   });
 }
 
+
 // ================= SAVE PAYMENT =================
 function savePayment() {
-  post({
+  safePost({
     action: "savePayment",
-    patientId: patient.value,
-    previousDue: prevDue.value,
-    paid: paidPay.value,
-    remaining: remainingPay.value
-  }).then(() => {
-    alert("Payment received");
-  });
+    patientId: document.getElementById("patient").value,
+    previousDue: Number(document.getElementById("prevDue").value),
+    paid: Number(document.getElementById("paidPay").value),
+    remaining: Number(document.getElementById("remainingPay").value)
+  }).then(() => alert("Payment received!"));
 }
 
 
