@@ -253,3 +253,22 @@ function loadReport() {
       .catch(err => console.log('SW registration failed:', err));
   });
 }
+function safePost(data) {
+  if (navigator.onLine) {
+    return post(data);
+  } else {
+    let queue = JSON.parse(localStorage.getItem("offlineQueue") || "[]");
+    queue.push(data);
+    localStorage.setItem("offlineQueue", JSON.stringify(queue));
+    alert("Offline mode: saved locally, will sync later.");
+    return Promise.resolve({ success: true });
+  }
+}
+
+// Auto sync when back online
+window.addEventListener("online", () => {
+  let queue = JSON.parse(localStorage.getItem("offlineQueue") || "[]");
+  queue.forEach(d => post(d));
+  localStorage.removeItem("offlineQueue");
+});
+
