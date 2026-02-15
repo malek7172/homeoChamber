@@ -7,31 +7,43 @@
 
 <body>
 
-<h2>📊 Prescription & Due Report</h2>
+<h2>📊 Prescription Report</h2>
 
+<!-- Patient Filter -->
+<label>Patient</label>
+<select id="patientFilter">
+  <option value="">All Patients</option>
+</select>
+
+<!-- Date Filter -->
 <label>From</label>
 <input type="date" id="from">
 
 <label>To</label>
 <input type="date" id="to">
 
-<button type="button" onclick="loadReport()">Load Report</button>
+<button type="button" onclick="loadReport()">Filter</button>
 
 <br><br>
 
 <table border="1" width="100%" id="tbl">
   <tr>
     <th>Date</th>
-    <th>Patient ID</th>
+    <th>Patient</th>
     <th>Fee</th>
     <th>Paid</th>
-    <th>Remaining Due</th>
+    <th>Remaining</th>
   </tr>
 </table>
 
-<script src="app.js?v=6"></script>
-<script src="app.js"></script>
+<script src="app.js?v=7"></script>
 
+<script>
+  window.onload = function () {
+    loadPatientsFilter();   // load patient dropdown
+    loadReport();           // auto load all prescriptions
+  };
+</script>
 
 </body>
 </html>
