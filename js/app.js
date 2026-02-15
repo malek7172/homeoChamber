@@ -218,3 +218,56 @@ function loadReport() {
     alert("Error loading report");
   });
 }
+//========patient filter in report ==============
+function loadPatientsFilter() {
+  post({ action: "getPatients" }).then(data => {
+    const sel = document.getElementById("patientFilter");
+
+    data.forEach(p => {
+      sel.innerHTML += `<option value="${p[0]}">${p[1]}</option>`;
+    });
+  });
+}
+//=====load report auto filter ===============
+function loadReport() {
+
+  const from = document.getElementById("from").value;
+  const to = document.getElementById("to").value;
+  const patientId = document.getElementById("patientFilter").value;
+
+  post({
+    action: "getReport",
+    from: from,
+    to: to,
+    patientId: patientId
+  }).then(data => {
+
+    const table = document.getElementById("tbl");
+
+    table.innerHTML = `
+      <tr>
+        <th>Date</th>
+        <th>Patient</th>
+        <th>Fee</th>
+        <th>Paid</th>
+        <th>Remaining</th>
+      </tr>
+    `;
+
+    data.forEach(r => {
+      table.innerHTML += `
+        <tr>
+          <td>${r.date}</td>
+          <td>${r.patientName}</td>
+          <td>${r.fee}</td>
+          <td>${r.paid}</td>
+          <td>${r.remaining}</td>
+        </tr>
+      `;
+    });
+
+  }).catch(err => {
+    console.error(err);
+    alert("Error loading report");
+  });
+}
