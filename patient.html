@@ -1,51 +1,63 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Prescription</title>
+  <title>New Patient</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
 <body>
 
-<h2>📝 Prescription</h2>
+<h2>👤 New Patient Registration</h2>
 
-<!-- Patient Dropdown -->
-<select id="patient" onchange="getDue()">
-  <option value="">Select Patient</option>
+<!-- patient_id (Auto Generated - Display Only) -->
+<label>Patient ID</label><br>
+<input id="patient_id" placeholder="Auto Generated" readonly>
+<br><br>
+
+<!-- name -->
+<label>Name</label><br>
+<input id="name" placeholder="Enter Patient Name">
+<br><br>
+
+<!-- sex -->
+<label>Sex</label><br>
+<select id="sex">
+  <option value="">Select</option>
+  <option value="Male">Male</option>
+  <option value="Female">Female</option>
 </select>
-
 <br><br>
 
-Previous Due: <span id="due">0</span>
-
+<!-- age -->
+<label>Age</label><br>
+<input id="age" type="number" placeholder="Enter Age">
 <br><br>
 
-<input id="symptoms" placeholder="Symptoms">
+<!-- mobile -->
+<label>Mobile</label><br>
+<input id="mobile" placeholder="Enter Mobile Number">
 <br><br>
 
-<input id="feeInput" placeholder="Fee" oninput="calc()">
+<!-- address -->
+<label>Address</label><br>
+<textarea id="address" placeholder="Enter Address"></textarea>
 <br><br>
 
-<input id="paidInput" placeholder="Paid" oninput="calc()">
+<!-- reg_date (Auto Date) -->
+<label>Registration Date</label><br>
+<input id="reg_date" type="date" readonly>
 <br><br>
 
-Remaining: <span id="remain">0</span>
-
-<br><br>
-
-<input id="nextVisit" type="date">
-
-<br><br>
-
-<button onclick="savePrescription()">Save Prescription</button>
+<button onclick="addPatient()">💾 Save Patient</button>
 <button onclick="logout()">🚪 Logout</button>
 
-<script src="js/app.js?v=3"></script>
+<script src="js/app.js?v=5"></script>
 
 <script>
-  // 🔥 THIS IS IMPORTANT
-  window.onload = function () {
-    loadPatients();
+  // Auto set today's date
+  window.onload = function() {
+    const today = new Date().toISOString().split("T")[0];
+    document.getElementById("reg_date").value = today;
   };
 </script>
 
