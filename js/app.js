@@ -132,7 +132,8 @@ function savePrescription() {
     patientId: patientId,
     symptoms: document.getElementById("symptoms").value,
     remedy: remedySelect.value,
-    power: selectedPower,
+    power: document.getElementById("power").value,
+
     dose: document.getElementById("dose").value,
    
     previousDue: Number(document.getElementById("due").innerText) || 0,
