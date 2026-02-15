@@ -179,32 +179,42 @@ function savePayment() {
 
 // ================= REPORT =================
 function loadReport() {
+  const from = document.getElementById("from").value;
+  const to = document.getElementById("to").value;
+
   post({
     action: "getReport",
-    from: from.value,
-    to: to.value
-  }).then(rows => {
+    from: from,
+    to: to
+  }).then(data => {
 
-    let html = `
+    const table = document.getElementById("tbl");
+
+    // Clear old rows except header
+    table.innerHTML = `
       <tr>
         <th>Date</th>
         <th>Patient ID</th>
         <th>Fee</th>
         <th>Paid</th>
         <th>Remaining Due</th>
-      </tr>`;
+      </tr>
+    `;
 
-    rows.forEach(r => {
-      html += `
+    data.forEach(r => {
+      table.innerHTML += `
         <tr>
-          <td>${new Date(r[0]).toLocaleDateString()}</td>
-          <td>${r[1]}</td>
-          <td>${r[2]}</td>
-          <td>${r[3]}</td>
-          <td>${r[4]}</td>
-        </tr>`;
+          <td>${r.date}</td>
+          <td>${r.patientId}</td>
+          <td>${r.fee}</td>
+          <td>${r.paid}</td>
+          <td>${r.remaining}</td>
+        </tr>
+      `;
     });
 
-    tbl.innerHTML = html;
+  }).catch(err => {
+    console.error(err);
+    alert("Error loading report");
   });
 }
