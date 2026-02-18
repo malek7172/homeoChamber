@@ -15,17 +15,29 @@ function post(data) {
 function login() {
   const user = document.getElementById("user").value.trim();
   const pass = document.getElementById("pass").value.trim();
-  if (!user || !pass) return alert("Enter username and password");
 
-  post({ action: "login", user, pass }).then(r => {
-    if (r.success) {           // <-- changed from r.status
-      localStorage.setItem("role", r.role);
-      localStorage.setItem("user", user);
-      window.location.href = "dashboard.html";
-    } else alert("Login failed");
-  });
+  if (!user || !pass) {
+    alert("Enter username and password");
+    return;
+  }
+
+  post({ action: "login", user, pass })
+    .then(r => {
+      console.log("Login response:", r);
+
+      if (r.status === "ok") {   // ✅ FIXED
+        localStorage.setItem("role", r.role);
+        localStorage.setItem("user", user);
+        window.location.href = "dashboard.html";
+      } else {
+        alert("Login failed");
+      }
+    })
+    .catch(err => {
+      console.error("Login error:", err);
+      alert("Server error");
+    });
 }
-
 
 
 // ================= LOGOUT =================
