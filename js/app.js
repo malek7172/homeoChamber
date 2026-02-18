@@ -6,9 +6,13 @@ const API_URL = "https://script.google.com/macros/s/AKfycbz73pJDpcpbjbytkQk-5djg
 function post(data) {
   return fetch(API_URL, {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
     body: JSON.stringify(data)
   }).then(res => res.json());
 }
+
 
 
 // ================= LOGIN =================
@@ -25,7 +29,7 @@ function login() {
     .then(r => {
       console.log("Login response:", r);
 
-      if (r.status === "ok") {   // ✅ FIXED
+      if (r && r.success === true) {   // ✅ MATCHES GS
         localStorage.setItem("role", r.role);
         localStorage.setItem("user", user);
         window.location.href = "dashboard.html";
