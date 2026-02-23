@@ -89,16 +89,9 @@ function filterPatients() {
 }
 // ================= ADD REMEDY =================
 
-/* ================= POST ================= */
 
-function post(data) {
-  return fetch(API_URL, {
-    method: "POST",
-    body: JSON.stringify(data)
-  }).then(res => res.json());
-}
 
-/* ================= ADD ================= */
+
 
 function addRemedy() {
   const name = document.getElementById("remedyName").value.trim();
