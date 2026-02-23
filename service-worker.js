@@ -1,29 +1,20 @@
-const CACHE_NAME = "chamber-cache-v1";
-const urlsToCache = [
-  "/index.html",
-  "/dashboard.html",
-  "/patient.html",
-  "/prescription.html",
-  "/payment.html",
-  "/report.html",
-  "/js/app.js",
-  "/manifest.json"
+const CACHE = "doctor-cache-v1";
+const FILES = [
+  "/",
+  "index.html",
+  "dashboard.html",
+  "app.js",
+  "style.css"
 ];
 
-self.addEventListener("install", event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => {
-      return cache.addAll(urlsToCache);
-    })
+self.addEventListener("install", e=>{
+  e.waitUntil(
+    caches.open(CACHE).then(c=>c.addAll(FILES))
   );
 });
 
-self.addEventListener("fetch", event => {
-  event.respondWith(
-    caches.match(event.request).then(response => {
-      return response || fetch(event.request);
-    }).catch(() => {
-      return caches.match("/index.html"); // fallback
-    })
+self.addEventListener("fetch", e=>{
+  e.respondWith(
+    caches.match(e.request).then(r=> r || fetch(e.request))
   );
 });
