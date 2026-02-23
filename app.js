@@ -284,7 +284,7 @@ function savePrescription(){
     action:"addPrescription",
     date:document.getElementById("pdate").value,
     patientId:patientSelect.value,
-    patientName:patientSelect.selectedOptions[0].text,
+    patientName: patientSelect.options[patientSelect.selectedIndex].text,
     symptoms:document.getElementById("symptoms").value,
     remedies:remedyArray.join(", "),
     usage:document.getElementById("usage").value,
