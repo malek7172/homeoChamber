@@ -87,3 +87,64 @@ function filterPatients() {
       row.innerText.toLowerCase().includes(input) ? "" : "none";
   });
 }
+// ================= ADD REMEDY =================
+function addRemedy() {
+  const name = document.getElementById("remedyName").value.trim();
+  const rack = document.getElementById("rackNo").value.trim();
+  const shelf = document.getElementById("shelfNo").value.trim();
+
+  if (!name) return alert("Remedy name is required");
+
+  safePost({
+    action: "saveRemedy",
+    name,
+    rack,
+    shelf
+  }).then(() => {
+    alert("Remedy saved successfully!");
+    clearRemedyForm();
+    loadRemediesTable();
+  });
+}
+
+function clearRemedyForm() {
+  document.getElementById("remedyName").value = "";
+  document.getElementById("rackNo").value = "";
+  document.getElementById("shelfNo").value = "";
+}
+
+// ================= LOAD REMEDIES TABLE =================
+function loadRemediesTable() {
+  post({ action: "getRemedies" }).then(data => {
+    const table = document.getElementById("remedyTable");
+    table.innerHTML = `
+      <tr>
+        <th>Name</th>
+        <th>Rack</th>
+        <th>Shelf</th>
+        <th>Action</th>
+      </tr>
+    `;
+
+    data.forEach(r => {
+      table.innerHTML += `
+        <tr>
+          <td>${r.name}</td>
+          <td>${r.rack}</td>
+          <td>${r.shelf}</td>
+          <td><button onclick="deleteRemedy(${r.id})">Delete</button></td>
+        </tr>
+      `;
+    });
+  });
+}
+
+// ================= DELETE REMEDY =================
+function deleteRemedy(id) {
+  if (!confirm("Are you sure you want to delete this remedy?")) return;
+
+  safePost({ action: "deleteRemedy", id }).then(() => {
+    alert("Remedy deleted");
+    loadRemediesTable();
+  });
+}
