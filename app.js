@@ -96,7 +96,7 @@ function addRemedy() {
   if (!name) return alert("Remedy name is required");
 
   safePost({
-    action: "saveRemedy",
+    action: "addRemedy",
     name,
     rack,
     shelf
