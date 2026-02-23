@@ -95,15 +95,19 @@ function addRemedy() {
 
   if (!name) return alert("Remedy name is required");
 
-  safePost({
+  post({
     action: "addRemedy",
     name,
     rack,
     shelf
-  }).then(() => {
-    alert("Remedy saved successfully!");
-    clearRemedyForm();
-    loadRemediesTable();
+  }).then(res => {
+    if (res.success) {
+      alert("Remedy saved successfully!");
+      clearRemedyForm();
+      loadRemediesTable();
+    } else {
+      alert("Save failed");
+    }
   });
 }
 
