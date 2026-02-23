@@ -177,3 +177,118 @@ function deleteRemedy(id) {
     }
   });
 }
+let remedyArray = [];
+
+function initPrescription(){
+  loadPatientsDropdown();
+  loadRemediesDropdown();
+  loadPrescriptions();
+}
+
+function loadPatientsDropdown(){
+  post({action:"getPatients"}).then(res=>{
+    const sel = document.getElementById("patientSelect");
+    sel.innerHTML="";
+    res.data.forEach(p=>{
+      sel.innerHTML += `<option value="${p[0]}">${p[1]}</option>`;
+    });
+  });
+}
+
+function loadRemediesDropdown(){
+  post({action:"getRemedies"}).then(res=>{
+    const sel = document.getElementById("remedySelect");
+    sel.innerHTML="";
+    res.data.forEach(r=>{
+      sel.innerHTML += `<option value="${r.id}">${r.name}</option>`;
+    });
+  });
+}
+
+function addRemedyRow(){
+  const remedyText = document.getElementById("remedySelect").selectedOptions[0].text;
+  const power = document.getElementById("power").value;
+
+  if(!power) return alert("Enter power");
+
+  const item = remedyText + " ("+power+")";
+  remedyArray.push(item);
+
+  document.getElementById("remedyList").innerHTML += `<li>${item}</li>`;
+  document.getElementById("power").value="";
+}
+
+function loadPreviousDue(){
+  const pid = document.getElementById("patientSelect").value;
+
+  post({action:"getPatientDue", patientId:pid})
+  .then(res=>{
+    document.getElementById("previousDue").value = res.due;
+    calculateTotal();
+  });
+}
+
+function calculateTotal(){
+  const prev = Number(document.getElementById("previousDue").value);
+  const fee = Number(document.getElementById("fee").value);
+  document.getElementById("total").value = prev + fee;
+  calculateDue();
+}
+
+function calculateDue(){
+  const total = Number(document.getElementById("total").value);
+  const paid = Number(document.getElementById("paid").value);
+  document.getElementById("due").value = total - paid;
+}
+
+function savePrescription(){
+
+  const patientSelect = document.getElementById("patientSelect");
+
+  post({
+    action:"addPrescription",
+    date:document.getElementById("pdate").value,
+    patientId:patientSelect.value,
+    patientName:patientSelect.selectedOptions[0].text,
+    symptoms:document.getElementById("symptoms").value,
+    remedies:remedyArray.join(", "),
+    usage:document.getElementById("usage").value,
+    previousDue:document.getElementById("previousDue").value,
+    fee:document.getElementById("fee").value,
+    total:document.getElementById("total").value,
+    paid:document.getElementById("paid").value,
+    due:document.getElementById("due").value,
+    nextVisit:document.getElementById("nextVisit").value
+  }).then(res=>{
+    if(res.success){
+      alert("Saved");
+      location.reload();
+    }
+  });
+}
+
+function loadPrescriptions(){
+  post({action:"getPrescriptions"}).then(res=>{
+    const table = document.getElementById("prescriptionTable");
+    table.innerHTML = `
+      <tr>
+        <th>Date</th>
+        <th>Patient</th>
+        <th>Total</th>
+        <th>Paid</th>
+        <th>Due</th>
+      </tr>
+    `;
+    res.data.forEach(p=>{
+      table.innerHTML += `
+        <tr>
+          <td>${p.date}</td>
+          <td>${p.patientName}</td>
+          <td>${p.total}</td>
+          <td>${p.paid}</td>
+          <td>${p.due}</td>
+        </tr>
+      `;
+    });
+  });
+}
