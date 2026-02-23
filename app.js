@@ -185,14 +185,49 @@ function initPrescription(){
   loadPrescriptions();
 }
 
+let allPatients = [];
+
 function loadPatientsDropdown(){
   post({action:"getPatients"}).then(res=>{
-    const sel = document.getElementById("patientSelect");
-    sel.innerHTML="";
-    res.data.forEach(p=>{
-      sel.innerHTML += `<option value="${p[0]}">${p[1]}</option>`;
-    });
+    if(!res.success) return;
+
+    allPatients = res.data;
+
+    renderPatientList(allPatients);
   });
+}
+
+function renderPatientList(list){
+  const sel = document.getElementById("patientSelect");
+  sel.innerHTML = "";
+
+  list.forEach(p=>{
+    sel.innerHTML += `
+      <option value="${p[0]}" 
+              data-name="${p[1]}" 
+              data-mobile="${p[4]}">
+        ${p[1]} - ${p[4]}
+      </option>
+    `;
+  });
+}
+
+function filterPatientList(){
+  const keyword = document
+                  .getElementById("patientSearch")
+                  .value
+                  .toLowerCase();
+
+  const filtered = allPatients.filter(p =>
+    p[1].toLowerCase().includes(keyword) ||
+    p[4].toLowerCase().includes(keyword)
+  );
+
+  renderPatientList(filtered);
+}
+
+function selectPatient(){
+  loadPreviousDue();
 }
 
 function loadRemediesDropdown(){
