@@ -88,7 +88,6 @@ function filterPatients() {
   });
 }
 // ================= ADD REMEDY =================
-const API_URL = "PASTE_YOUR_EXEC_URL_HERE";
 
 /* ================= POST ================= */
 
