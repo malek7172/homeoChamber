@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Prescription</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body onload="initPrescription()">
+
+<h2>Prescription Entry</h2>
+
+<label>Patient</label><br>
+<select id="patientSelect" onchange="loadPreviousDue()"></select><br><br>
+
+<label>Date</label><br>
+<input type="date" id="pdate"><br><br>
+
+<label>Symptoms</label><br>
+<textarea id="symptoms"></textarea><br><br>
+
+<label>Remedy</label><br>
+<select id="remedySelect"></select>
+<input type="text" id="power" placeholder="Power">
+<button onclick="addRemedyRow()">Add Remedy</button>
+
+<ul id="remedyList"></ul>
+
+<label>Usage</label><br>
+<textarea id="usage"></textarea><br><br>
+
+<label>Previous Due</label><br>
+<input type="number" id="previousDue" readonly><br><br>
+
+<label>Fee</label><br>
+<input type="number" id="fee" oninput="calculateTotal()"><br><br>
+
+<label>Total</label><br>
+<input type="number" id="total" readonly><br><br>
+
+<label>Paid</label><br>
+<input type="number" id="paid" oninput="calculateDue()"><br><br>
+
+<label>Remaining Due</label><br>
+<input type="number" id="due" readonly><br><br>
+
+<label>Next Visit</label><br>
+<input type="date" id="nextVisit"><br><br>
+
+<button onclick="savePrescription()">Save Prescription</button>
+
+<hr>
+
+<h3>Prescription List</h3>
+<table border="1" width="100%" id="prescriptionTable"></table>
+
+<script src="app.js"></script>
+
+</body>
+</html>
