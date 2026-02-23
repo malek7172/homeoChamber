@@ -218,10 +218,13 @@ function filterPatientList(){
                   .value
                   .toLowerCase();
 
-  const filtered = allPatients.filter(p =>
-    p[1].toLowerCase().includes(keyword) ||
-    p[4].toLowerCase().includes(keyword)
-  );
+  const filtered = allPatients.filter(p => {
+
+    const name = String(p[1] || "").toLowerCase();
+    const mobile = String(p[4] || "").toLowerCase();
+
+    return name.includes(keyword) || mobile.includes(keyword);
+  });
 
   renderPatientList(filtered);
 }
