@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Patient Management</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h2>👨‍⚕️ Patient Entry</h2>
+
+<div class="form-box">
+
+  <input type="hidden" id="pid">
+
+  <label>Name</label>
+  <input type="text" id="name">
+
+  <label>Sex</label>
+  <select id="sex">
+    <option value="">Select</option>
+    <option>Male</option>
+    <option>Female</option>
+  </select>
+
+  <label>Age</label>
+  <input type="number" id="age">
+
+  <label>Mobile</label>
+  <input type="text" id="mobile">
+
+  <label>Address</label>
+  <textarea id="address"></textarea>
+
+  <label>Date</label>
+  <input type="date" id="date">
+
+  <button onclick="savePatient()">Save</button>
+
+</div>
+
+<hr>
+
+<h3>Patient List</h3>
+
+<input type="text" id="search" placeholder="Search patient..." onkeyup="filterPatients()">
+
+<table id="patientTable">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Sex</th>
+      <th>Age</th>
+      <th>Mobile</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<script src="app.js"></script>
+<script>
+  window.onload = loadPatients;
+</script>
+
+</body>
+</html>
