@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Remedy Management</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<h2>💊 Remedy Management</h2>
+
+<!-- Add / Edit Remedy -->
+<label>Name</label><br>
+<input id="remedyName" placeholder="Remedy Name"><br><br>
+
+<label>Rack No</label><br>
+<input id="rackNo" placeholder="Rack Number"><br><br>
+
+<label>Shelf No</label><br>
+<input id="shelfNo" placeholder="Shelf Number"><br><br>
+
+<button onclick="addRemedy()">Save Remedy</button>
+<button onclick="clearRemedyForm()">Clear</button>
+
+<hr>
+
+<h3>Existing Remedies</h3>
+<table border="1" width="100%" id="remedyTable">
+  <tr>
+    <th>Name</th>
+    <th>Rack</th>
+    <th>Shelf</th>
+    <th>Action</th>
+  </tr>
+</table>
+
+<button onclick="logout()">🚪 Logout</button>
+
+<script src="app.js?v=1"></script>
+<script>
+  window.onload = function() {
+    loadRemediesTable();
+  };
+</script>
+
+</body>
+</html>
