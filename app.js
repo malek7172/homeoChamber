@@ -88,28 +88,49 @@ function filterPatients() {
   });
 }
 // ================= ADD REMEDY =================
+const API_URL = "PASTE_YOUR_EXEC_URL_HERE";
+
+/* ================= POST ================= */
+
+function post(data) {
+  return fetch(API_URL, {
+    method: "POST",
+    body: JSON.stringify(data)
+  }).then(res => res.json());
+}
+
+/* ================= ADD ================= */
+
 function addRemedy() {
   const name = document.getElementById("remedyName").value.trim();
   const rack = document.getElementById("rackNo").value.trim();
   const shelf = document.getElementById("shelfNo").value.trim();
 
-  if (!name) return alert("Remedy name is required");
+  if (!name) {
+    alert("Remedy name is required");
+    return;
+  }
 
   post({
     action: "addRemedy",
-    name,
-    rack,
-    shelf
+    name: name,
+    rack: rack,
+    shelf: shelf
   }).then(res => {
     if (res.success) {
-      alert("Remedy saved successfully!");
+      alert("Remedy saved!");
       clearRemedyForm();
-      loadRemediesTable();
+      loadRemedies();
     } else {
       alert("Save failed");
     }
+  }).catch(err => {
+    alert("Server error");
+    console.log(err);
   });
 }
+
+/* ================= CLEAR ================= */
 
 function clearRemedyForm() {
   document.getElementById("remedyName").value = "";
@@ -117,9 +138,13 @@ function clearRemedyForm() {
   document.getElementById("shelfNo").value = "";
 }
 
-// ================= LOAD REMEDIES TABLE =================
-function loadRemediesTable() {
-  post({ action: "getRemedies" }).then(data => {
+/* ================= LOAD ================= */
+
+function loadRemedies() {
+  post({ action: "getRemedies" }).then(res => {
+
+    if (!res.success) return;
+
     const table = document.getElementById("remedyTable");
     table.innerHTML = `
       <tr>
@@ -130,25 +155,33 @@ function loadRemediesTable() {
       </tr>
     `;
 
-    data.forEach(r => {
+    res.data.forEach(r => {
       table.innerHTML += `
         <tr>
           <td>${r.name}</td>
           <td>${r.rack}</td>
           <td>${r.shelf}</td>
-          <td><button onclick="deleteRemedy(${r.id})">Delete</button></td>
+          <td>
+            <button onclick="deleteRemedy('${r.id}')">Delete</button>
+          </td>
         </tr>
       `;
     });
+
   });
 }
 
-// ================= DELETE REMEDY =================
-function deleteRemedy(id) {
-  if (!confirm("Are you sure you want to delete this remedy?")) return;
+/* ================= DELETE ================= */
 
-  safePost({ action: "deleteRemedy", id }).then(() => {
-    alert("Remedy deleted");
-    loadRemediesTable();
+function deleteRemedy(id) {
+  if (!confirm("Delete this remedy?")) return;
+
+  post({
+    action: "deleteRemedy",
+    id: id
+  }).then(res => {
+    if (res.success) {
+      loadRemedies();
+    }
   });
 }
