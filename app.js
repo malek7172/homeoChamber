@@ -382,3 +382,8 @@ document.addEventListener("DOMContentLoaded", () => {
   `;
   document.getElementById("menu").innerHTML = menuHTML;
 });
+
+const current = location.pathname.split("/").pop();
+document.querySelectorAll(".menu-bar a").forEach(a => {
+  if(a.getAttribute("href") === current) a.classList.add("active");
+});
