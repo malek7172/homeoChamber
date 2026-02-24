@@ -366,17 +366,22 @@ if ('serviceWorker' in navigator) {
       .catch(err => console.log('SW registration failed:', err));
   });
 }
-<nav class="menu-bar">
-  <ul>
-    <li><a href="dashboard.html">🏠 Dashboard</a></li>
-    <li><a href="patient.html">🧾 Patients</a></li>
-    <li><a href="remedy.html">💊 Remedies</a></li>
-    <li><a href="prescription.html">📄 Prescriptions</a></li>
-    <li><a href="payment.html">💰 Payments</a></li>
-    <li><a href="report.html">📊 Reports</a></li>
-    <li><a href="#" onclick="logout()">🚪 Logout</a></li>
-  </ul>
-</nav>
+document.addEventListener("DOMContentLoaded", () => {
+  const menuHTML = `
+    <nav class="menu-bar">
+      <ul>
+        <li><a href="dashboard.html">🏠 Dashboard</a></li>
+        <li><a href="patient.html">🧾 Patients</a></li>
+        <li><a href="remedy.html">💊 Remedies</a></li>
+        <li><a href="prescription.html">📄 Prescriptions</a></li>
+        <li><a href="payment.html">💰 Payments</a></li>
+        <li><a href="report.html">📊 Reports</a></li>
+        <li><a href="#" onclick="logout()">🚪 Logout</a></li>
+      </ul>
+    </nav>
+  `;
+  document.getElementById("menu").innerHTML = menuHTML;
+});
 
 const current = location.pathname.split("/").pop();
 document.querySelectorAll(".menu-bar a").forEach(a => {
