@@ -173,12 +173,23 @@ function patientChanged(){
   });
 });
   // Store loaded prescriptions in a global variable
+// Global array to store loaded prescriptions
 let prescriptionData = [];
 
-// Call this when loading prescriptions from server
-function loadPrescriptions(data) {
-  prescriptionData = data; // store for filtering
-  renderPrescriptionTable(prescriptionData);
+// Load prescriptions from server
+function initPrescription() {
+  post({ action: "getPrescriptions" }) // fetch all prescriptions
+    .then(data => {
+      prescriptionData = data.map(r => ({
+        date: r.date,
+        patientName: r.patientName,
+        fee: r.fee || 0,
+        paid: r.paid || 0,
+        remaining: r.remaining || 0
+      }));
+      renderPrescriptionTable(prescriptionData);
+    })
+    .catch(err => console.error("Error loading prescriptions:", err));
 }
 
 // Render table rows
@@ -188,28 +199,23 @@ function renderPrescriptionTable(data) {
 
   data.forEach(r => {
     const row = document.createElement("tr");
-
     row.innerHTML = `
       <td>${r.date}</td>
       <td>${r.patientName}</td>
-      <td>${r.symptoms || ""}</td>
-      <td>${r.remedy || ""}</td>
       <td>${r.fee}</td>
       <td>${r.paid}</td>
       <td>${r.remaining}</td>
     `;
-
     tableBody.appendChild(row);
   });
 }
 
-// Filter loaded prescriptions
+// Filter prescriptions by patient
 function filterPrescription() {
   const input = document.getElementById("searchPatient").value.toLowerCase();
   const filtered = prescriptionData.filter(p =>
     p.patientName.toLowerCase().includes(input)
   );
-
   renderPrescriptionTable(filtered);
 }
 </script>  
