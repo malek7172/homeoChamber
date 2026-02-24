@@ -61,7 +61,30 @@ function getMonthlyReport(){
     <p>Total Due:  ${res.due}</p>
   `;
 }
+	  function loadReportPatients(){
+
+  post({action:"getPatients"}).then(res=>{
+
+    const select = document.getElementById("reportPatient");
+    select.innerHTML = "<option value=''>Select Patient</option>";
+
+    res.data.forEach(p=>{
+      select.innerHTML += `
+        <option value="${p[0]}">
+          ${p[1]} - ${p[4]}
+        </option>
+      `;
+    });
+
+  });
+}
+
+
+	  window.onload = function(){
+  loadReportPatients();
+};
   </script>  
 	<script src="app.js"></script>
+	
 </body>
 </html>
