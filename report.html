@@ -1,12 +1,56 @@
-<div id="menu"></div>
+
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title></title>
+	<style>
+/* MENU BAR */
+.menu-bar {
+  background-color: #007bff; /* blue background */
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+}
+
+.menu-bar ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;           /* <-- row-wise */
+}
+
+.menu-bar li {
+  margin: 0;
+}
+
+.menu-bar li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 12px 20px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.menu-bar li a:hover {
+  background-color: #0056b3; /* darker on hover */
+}
+</style>
 </head>
 <body>
+	<nav class="menu-bar">
+  <ul>
+    <li><a href="dashboard.html">🏠 Dashboard</a></li>
+    <li><a href="patient.html">🧾 Patients</a></li>
+    <li><a href="remedy.html">💊 Remedies</a></li>
+    <li><a href="prescription.html">📄 Prescriptions</a></li>
+    <li><a href="payment.html">💰 Payments</a></li>
+    <li><a href="report.html">📊 Reports</a></li>
+    <li><a href="#" onclick="logout()">🚪 Logout</a></li>
+  </ul>
+</nav>
 <h3>Income Reports</h3>
 
 <input type="date" id="reportDate">
