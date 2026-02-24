@@ -6,7 +6,18 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<?!= HtmlService.createHtmlOutputFromFile('menu').getContent(); ?>
+ <!-- MENU START -->
+  <nav class="menu-bar">
+    <ul>
+      <li><a href="dashboard.html">🏠 Dashboard</a></li>
+      <li><a href="patient.html">🧾 Patients</a></li>
+      <li><a href="remedy.html">💊 Remedies</a></li>
+      <li><a href="prescription.html">📄 Prescriptions</a></li>
+      <li><a href="payment.html">💰 Payments</a></li>
+      <li><a href="report.html">📊 Reports</a></li>
+      <li><a href="#" onclick="logout()">🚪 Logout</a></li>
+    </ul>
+  </nav>
 <h2>👨‍⚕️ Patient Entry</h2>
 
 <div class="form-box">
