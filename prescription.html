@@ -114,17 +114,14 @@
 <button onclick="savePrescription()">Save Prescription</button>
 
 <hr>
-
 <h3>Prescription List</h3>
- <input type="text" id="searchPatient" placeholder="Search patient..." onkeyup="filterPrescription()">
+<input type="text" id="searchPatient" placeholder="Search patient..." onkeyup="filterPrescription()">
 
-<table id="prescriptionTable" border:"1px>
+<table id="prescriptionTable" border="1" style="width:100%; border-collapse: collapse;">
   <thead>
     <tr>
       <th>Date</th>
       <th>Patient</th>
-      <th>Symptoms</th>
-      <th>Remedy</th>
       <th>Fee</th>
       <th>Paid</th>
       <th>Remaining</th>
@@ -133,7 +130,7 @@
   <tbody>
     <!-- Prescription rows inserted dynamically -->
   </tbody>
-
+</table>
 <script>
 function patientChanged(){
 
