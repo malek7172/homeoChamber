@@ -63,10 +63,9 @@
 <h3>Prescription List</h3>
 <table border="1" width="100%" id="prescriptionTable"></table>
 <script>
- function patientChanged(){
+function patientChanged(){
 
   const patientId = document.getElementById("patientSelect").value;
-
   if(!patientId) return;
 
   post({
@@ -74,32 +73,26 @@
     patientId: patientId
   }).then(res=>{
 
-    if(!res || !res.success){
-      console.log("No response from server");
-      return;
-    }
+    if(res.success && res.data){
 
-    if(res.data){
+      const symptomsEl = document.getElementById("symptoms");
+      const prevDueEl = document.getElementById("previousDue");
 
-      document.getElementById("symptoms").value = res.data.symptoms || "";
-      document.getElementById("remedies").value = res.data.remedies || "";
-      document.getElementById("usage").value = res.data.usage || "";
-      document.getElementById("previousDue").value = res.data.previousDue || 0;
+      if(symptomsEl)
+        symptomsEl.value = res.data.symptoms || "";
 
-      if(typeof calculateTotal === "function"){
-        calculateTotal();
-      }
+      if(prevDueEl)
+        prevDueEl.value = res.data.previousDue || 0;
 
     } else {
 
+      // If no previous prescription
       document.getElementById("symptoms").value = "";
-      document.getElementById("remedies").value = "";
-      document.getElementById("usage").value = "";
       document.getElementById("previousDue").value = 0;
     }
 
   }).catch(err=>{
-    console.log("Error:", err);
+    console.log("Error loading last prescription:", err);
   });
 }
 </script>  
