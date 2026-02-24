@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+</head>
+<body>
+<h3>Income Reports</h3>
+
+<input type="date" id="reportDate">
+<button onclick="getDailyReport()">Daily Report</button>
+
+<input type="month" id="reportMonth">
+<button onclick="getMonthlyReport()">Monthly Report</button>
+
+<select id="reportPatient"></select>
+<button onclick="getPatientReport()">Patient Report</button>
+
+<div id="reportResult"></div>
+  <script>
+function getDailyReport(){
+
+  const date = document.getElementById("reportDate").value;
+
+  post({
+    action:"getReport",
+    type:"daily",
+    date:date
+  }).then(showReport);
+}
+function getMonthlyReport(){
+
+  const month = document.getElementById("reportMonth").value;
+
+  post({
+    action:"getReport",
+    type:"monthly",
+    month:month
+  }).then(showReport);
+}
+  function getPatientReport(){
+
+  const patientId = document.getElementById("reportPatient").value;
+
+  post({
+    action:"getReport",
+    type:"patient",
+    patientId:patientId
+  }).then(showReport);
+}
+    function showReport(res){
+
+  if(!res.success) return;
+
+  document.getElementById("reportResult").innerHTML = `
+    <h4>Report Summary</h4>
+    <p>Total Visits: ${res.count}</p>
+    <p>Total Amount: ₹ ${res.total}</p>
+    <p>Total Paid: ₹ ${res.paid}</p>
+    <p>Total Due: ₹ ${res.due}</p>
+  `;
+}
+  </script>  
+</body>
+</html>
