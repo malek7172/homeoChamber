@@ -120,18 +120,50 @@
 <input type="text" id="searchPatient" placeholder="Search patient..." onkeyup="filterPrescription()">
 
 <br><br>
-  <table id="prescriptionTable" border="1">
+<table id="prescriptionTable" border="1">
   <thead>
     <tr>
       <th>Date</th>
       <th>Patient</th>
+      <th>Symptoms</th>
+      <th>Remedy</th>
       <th>Fee</th>
       <th>Paid</th>
       <th>Remaining</th>
     </tr>
   </thead>
   <tbody>
-    <!-- Prescription rows inserted dynamically -->
+    <!-- rows will be inserted dynamically -->
+  </tbody>
+</table><table id="prescriptionTable" border="1">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Patient</th>
+      <th>Symptoms</th>
+      <th>Remedy</th>
+      <th>Fee</th>
+      <th>Paid</th>
+      <th>Remaining</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- rows will be inserted dynamically -->
+  </tbody>
+</table><table id="prescriptionTable" border="1">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Patient</th>
+      <th>Symptoms</th>
+      <th>Remedy</th>
+      <th>Fee</th>
+      <th>Paid</th>
+      <th>Remaining</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- rows will be inserted dynamically -->
   </tbody>
 </table>
 <script>
@@ -196,6 +228,8 @@ function initPrescription() {
 }
 
 // Function to format ISO date to yyyy-mm-dd
+<script>
+// ===================== FORMAT DATE =====================
 function formatDate(isoDate) {
   if (!isoDate) return "";
   const d = new Date(isoDate);
@@ -205,15 +239,32 @@ function formatDate(isoDate) {
   return `${year}-${month}-${day}`;
 }
 
-// Render table rows
+// ===================== PRESCRIPTION DATA =====================
+let prescriptionData = [];
+
+// Load prescriptions from server
+function loadPrescriptions(data) {
+  prescriptionData = data.map(r => ({
+    ...r,
+    date: formatDate(r.date)  // format date immediately
+  }));
+  renderPrescriptionTable(prescriptionData);
+}
+
+// Render prescription table
 function renderPrescriptionTable(data) {
-  const tableBody = document.getElementById("prescriptionTable").querySelector("tbody");
-  tableBody.innerHTML = ""; // clear previous rows only
+  const tableBody = document.querySelector("#prescriptionTable tbody");
+  tableBody.innerHTML = ""; // clear previous rows
 
   if (data.length === 0) {
-    const row = document.createElement("tr");
-    row.innerHTML = `<td colspan="5" style="text-align:center; font-style:italic;">No matching records found</td>`;
-    tableBody.appendChild(row);
+    // show a "No matching records" row without hiding header
+    tableBody.innerHTML = `
+      <tr>
+        <td colspan="7" style="text-align:center; color:gray;">
+          No matching records
+        </td>
+      </tr>
+    `;
     return;
   }
 
@@ -222,15 +273,17 @@ function renderPrescriptionTable(data) {
     row.innerHTML = `
       <td>${r.date}</td>
       <td>${r.patientName}</td>
-      <td>${r.fee}</td>
-      <td>${r.paid}</td>
-      <td>${r.remaining}</td>
+      <td>${r.symptoms || ""}</td>
+      <td>${r.remedy || ""}</td>
+      <td>${r.fee || 0}</td>
+      <td>${r.paid || 0}</td>
+      <td>${r.remaining || 0}</td>
     `;
     tableBody.appendChild(row);
   });
 }
 
-// Filter prescriptions by patient name
+// ===================== FILTER PRESCRIPTIONS =====================
 function filterPrescription() {
   const input = document.getElementById("searchPatient").value.toLowerCase();
   const filtered = prescriptionData.filter(p =>
@@ -238,6 +291,18 @@ function filterPrescription() {
   );
   renderPrescriptionTable(filtered);
 }
+
+// ===================== INIT FUNCTION =====================
+function initPrescription() {
+  // Load prescriptions from server
+  post({ action: "getPrescriptions" })  // your server action to get all prescriptions
+    .then(data => loadPrescriptions(data))
+    .catch(err => console.error("Failed to load prescriptions:", err));
+}
+
+// Call init on page load
+document.addEventListener("DOMContentLoaded", initPrescription);
+</script>
 </script>  
 <script src="app.js"></script>
 
