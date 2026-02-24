@@ -352,4 +352,17 @@ function login() {
       alert("Server error. Check deployment.");
     });
 }
+// ================= LOGOUT =================
+function logout() {
+  localStorage.clear();
+  window.location.href = "index.html";
+}
 
+// ================= PWA Service Worker =================
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js')
+      .then(reg => console.log('Service Worker registered:', reg.scope))
+      .catch(err => console.log('SW registration failed:', err));
+  });
+}
