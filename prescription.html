@@ -62,7 +62,39 @@
 
 <h3>Prescription List</h3>
 <table border="1" width="100%" id="prescriptionTable"></table>
+<script>
+  function patientChanged(){
 
+  const patientId = document.getElementById("patientSelect").value;
+
+  if(!patientId) return;
+
+  post({
+    action:"getLastPrescription",
+    patientId: patientId
+  }).then(res=>{
+
+    if(res.data){
+
+      document.getElementById("symptoms").value = res.data.symptoms || "";
+      document.getElementById("remedies").value = res.data.remedies || "";
+      document.getElementById("usage").value = res.data.usage || "";
+      document.getElementById("previousDue").value = res.data.previousDue || 0;
+
+      calculateTotal(); // if you have auto calculation
+    }
+    else{
+      // clear if no previous record
+      document.getElementById("symptoms").value = "";
+      document.getElementById("remedies").value = "";
+      document.getElementById("usage").value = "";
+      document.getElementById("previousDue").value = 0;
+    }
+
+  });
+
+}
+</script>  
 <script src="app.js"></script>
 
 </body>
