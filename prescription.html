@@ -115,7 +115,9 @@
 
 <hr>
 <h3>Prescription List</h3>
-<input type="text" id="searchPatient" placeholder="Search patient..." onkeyup="filterPrescription()">
+
+
+<input type="text" id="searchPatient" placeholder="Search patient..." onkeyup="filterPrescription()"><br>
 
 <table id="prescriptionTable" border="1" style="width:100%; border-collapse: collapse;">
   <thead>
@@ -128,7 +130,7 @@
     </tr>
   </thead>
   <tbody>
-    <!-- Prescription rows inserted dynamically -->
+    <!-- Rows will be inserted dynamically -->
   </tbody>
 </table>
 <script>
@@ -178,14 +180,15 @@ let prescriptionData = [];
 
 // Load prescriptions from server
 function initPrescription() {
-  post({ action: "getPrescriptions" }) // fetch all prescriptions
+  post({ action: "getPrescriptions" })  // make sure GS returns patientName
     .then(data => {
+      // Make sure each record has patientName
       prescriptionData = data.map(r => ({
         date: r.date,
-        patientName: r.patientName,
-        fee: r.fee || 0,
-        paid: r.paid || 0,
-        remaining: r.remaining || 0
+        patientName: r.patientName || "Unknown",  // fallback
+        fee: Number(r.fee) || 0,
+        paid: Number(r.paid) || 0,
+        remaining: Number(r.remaining) || 0
       }));
       renderPrescriptionTable(prescriptionData);
     })
@@ -194,8 +197,15 @@ function initPrescription() {
 
 // Render table rows
 function renderPrescriptionTable(data) {
-  const tableBody = document.getElementById("prescriptionTable").getElementsByTagName("tbody")[0];
-  tableBody.innerHTML = ""; // clear table
+  const tableBody = document.getElementById("prescriptionTable").querySelector("tbody");
+  tableBody.innerHTML = ""; // clear previous rows only
+
+  if (data.length === 0) {
+    const row = document.createElement("tr");
+    row.innerHTML = `<td colspan="5" style="text-align:center;">No matching records found</td>`;
+    tableBody.appendChild(row);
+    return;
+  }
 
   data.forEach(r => {
     const row = document.createElement("tr");
@@ -210,7 +220,7 @@ function renderPrescriptionTable(data) {
   });
 }
 
-// Filter prescriptions by patient
+// Filter prescriptions by patient name
 function filterPrescription() {
   const input = document.getElementById("searchPatient").value.toLowerCase();
   const filtered = prescriptionData.filter(p =>
