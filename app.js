@@ -374,7 +374,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <li><a href="patient.html">🧾 Patients</a></li>
         <li><a href="remedy.html">💊 Remedies</a></li>
         <li><a href="prescription.html">📄 Prescriptions</a></li>
-        <li><a href="payment.html">💰 Payments</a></li>
+      
         <li><a href="report.html">📊 Reports</a></li>
         <li><a href="#" onclick="logout()">🚪 Logout</a></li>
       </ul>
