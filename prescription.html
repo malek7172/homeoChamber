@@ -176,17 +176,16 @@ function patientChanged(){
   });
 });
   // Store loaded prescriptions in a global variable
-// Global array to store loaded prescriptions
 let prescriptionData = [];
 
-// Load prescriptions from server
+// Initialize prescription list from server
 function initPrescription() {
   post({ action: "getPrescriptions" })  // make sure GS returns patientName
     .then(data => {
-      // Make sure each record has patientName
+      // Map data and format date
       prescriptionData = data.map(r => ({
-        date: r.date,
-        patientName: r.patientName || "Unknown",  // fallback
+        date: formatDate(r.date),           // format date for display
+        patientName: r.patientName || "Unknown",
         fee: Number(r.fee) || 0,
         paid: Number(r.paid) || 0,
         remaining: Number(r.remaining) || 0
@@ -196,6 +195,16 @@ function initPrescription() {
     .catch(err => console.error("Error loading prescriptions:", err));
 }
 
+// Function to format ISO date to yyyy-mm-dd
+function formatDate(isoDate) {
+  if (!isoDate) return "";
+  const d = new Date(isoDate);
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
 // Render table rows
 function renderPrescriptionTable(data) {
   const tableBody = document.getElementById("prescriptionTable").querySelector("tbody");
@@ -203,7 +212,7 @@ function renderPrescriptionTable(data) {
 
   if (data.length === 0) {
     const row = document.createElement("tr");
-    row.innerHTML = `<td colspan="5" style="text-align:center;">No matching records found</td>`;
+    row.innerHTML = `<td colspan="5" style="text-align:center; font-style:italic;">No matching records found</td>`;
     tableBody.appendChild(row);
     return;
   }
