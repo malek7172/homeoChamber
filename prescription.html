@@ -114,9 +114,43 @@
 <button onclick="savePrescription()">Save Prescription</button>
 
 <hr>
-<input type="text" id="searchPatient" placeholder="Search patient..." onkeyup="filterPrescription()">
+
 <h3>Prescription List</h3>
-<table border="1" width="100%" id="prescriptionTable"></table>
+ <input type="text" id="searchPatient" placeholder="Search patient..." onkeyup="filterPrescription()">
+
+<table id="prescriptionTable">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Patient</th>
+      <th>Symptoms</th>
+      <th>Remedy</th>
+      <th>Fee</th>
+      <th>Paid</th>
+      <th>Remaining</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- Prescription rows inserted dynamically -->
+  </tbody>
+</table><input type="text" id="searchPatient" placeholder="Search patient..." onkeyup="filterPrescription()">
+
+<table id="prescriptionTable">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Patient</th>
+      <th>Symptoms</th>
+      <th>Remedy</th>
+      <th>Fee</th>
+      <th>Paid</th>
+      <th>Remaining</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- Prescription rows inserted dynamically -->
+  </tbody>
+</table>
 <script>
 function patientChanged(){
 
@@ -158,6 +192,46 @@ function patientChanged(){
     width: '100%'
   });
 });
+  // Store loaded prescriptions in a global variable
+let prescriptionData = [];
+
+// Call this when loading prescriptions from server
+function loadPrescriptions(data) {
+  prescriptionData = data; // store for filtering
+  renderPrescriptionTable(prescriptionData);
+}
+
+// Render table rows
+function renderPrescriptionTable(data) {
+  const tableBody = document.getElementById("prescriptionTable").getElementsByTagName("tbody")[0];
+  tableBody.innerHTML = ""; // clear table
+
+  data.forEach(r => {
+    const row = document.createElement("tr");
+
+    row.innerHTML = `
+      <td>${r.date}</td>
+      <td>${r.patientName}</td>
+      <td>${r.symptoms || ""}</td>
+      <td>${r.remedy || ""}</td>
+      <td>${r.fee}</td>
+      <td>${r.paid}</td>
+      <td>${r.remaining}</td>
+    `;
+
+    tableBody.appendChild(row);
+  });
+}
+
+// Filter loaded prescriptions
+function filterPrescription() {
+  const input = document.getElementById("searchPatient").value.toLowerCase();
+  const filtered = prescriptionData.filter(p =>
+    p.patientName.toLowerCase().includes(input)
+  );
+
+  renderPrescriptionTable(filtered);
+}
 </script>  
 <script src="app.js"></script>
 
