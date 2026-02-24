@@ -119,7 +119,7 @@
 
 <input type="text" id="searchPatient" placeholder="Search patient..." onkeyup="filterPrescription()">
 
-<br><br>
+<br>
 <table id="prescriptionTable" border="1">
   <thead>
     <tr>
@@ -178,27 +178,7 @@ function patientChanged(){
   });
 });
   // Store loaded prescriptions in a global variable
-let prescriptionData = [];
 
-// Initialize prescription list from server
-function initPrescription() {
-  post({ action: "getPrescriptions" })  // make sure GS returns patientName
-    .then(data => {
-      // Map data and format date
-      prescriptionData = data.map(r => ({
-        date: formatDate(r.date),           // format date for display
-        patientName: r.patientName || "Unknown",
-        fee: Number(r.fee) || 0,
-        paid: Number(r.paid) || 0,
-        remaining: Number(r.remaining) || 0
-      }));
-      renderPrescriptionTable(prescriptionData);
-    })
-    .catch(err => console.error("Error loading prescriptions:", err));
-}
-
-// Function to format ISO date to yyyy-mm-dd
-<script>
 // ===================== FORMAT DATE =====================
 function formatDate(isoDate) {
   if (!isoDate) return "";
