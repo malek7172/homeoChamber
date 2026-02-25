@@ -32,7 +32,7 @@ h2, h3 {
 }
 
 input, select, textarea {
-  width: 50%;
+  width: 100%;
   padding: 8px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
@@ -78,4 +78,36 @@ th, td {
   padding: 8px;
   text-align: left;
   border: 1px solid #ddd;
+}
+
+/* MENU BAR */
+.menu-bar {
+  background-color: #007bff; /* blue background */
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+}
+
+.menu-bar ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;           /* <-- row-wise */
+}
+
+.menu-bar li {
+  margin: 0;
+}
+
+.menu-bar li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 12px 20px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.menu-bar li a:hover {
+  background-color: #0056b3; /* darker on hover */
 }
