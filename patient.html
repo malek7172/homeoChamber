@@ -53,10 +53,10 @@
 <hr>
 
 <h3>Patient List</h3>
-
+<div class="table-container">
 <input type="text" id="search" placeholder="Search patient..." onkeyup="filterPatients()">
 
-<table id="patientTable">
+<table id="patientTable" >
   <thead>
     <tr>
       <th>Name</th>
@@ -68,7 +68,7 @@
   </thead>
   <tbody></tbody>
 </table>
-
+</div>
 <script src="app.js"></script>
 <script>
   window.onload = loadPatients;
