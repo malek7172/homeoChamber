@@ -62,3 +62,20 @@ th, td {
   padding: 8px;
   border: 1px solid #ddd;
 }
+
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px; /* prevents breaking layout */
+}
+
+th, td {
+  padding: 8px;
+  text-align: left;
+  border: 1px solid #ddd;
+}
